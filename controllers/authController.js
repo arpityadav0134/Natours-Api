@@ -48,7 +48,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
 
   const url = `${req.protocol}://${req.get('host')}/me`;
-  console.log(url);
+  // console.log(url);
 
   //Sending welcome email to the user
   await new Email(newUser, url).sendWelcome();
