@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 //AppError: custom error calss for throwing operational errors
 const AppError = require('./utils/appError');
@@ -27,6 +28,20 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
+
+//Implement CORS (cross origin resource sharing) for allowing other websites to consume our api
+app.use(cors());
+//Access-Control-Allow-Origin *
+//For situation when back end code (or api) and the front end are hosted on different hosts
+//Ex: API at - api.natours.com and Front end code at - natours.com, use:
+//app.use(cors({
+//   origin: 'https://www.natours.com'
+// }))
+
+//Implement CORS for sensitive patch and delete requests
+app.options('*', cors())
+//app.options('/api/v1/tours/:id', cors())
+
 //Serving the static files in the public folder. Example:  http://127.0.0.1:3000/overview.html
 app.use(express.static(path.join(__dirname, 'public')));
 
