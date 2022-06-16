@@ -45,6 +45,7 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   next();
 });
 
+//filterObj: used in updateMe to avoid illegal updates
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
   Object.keys(obj).forEach(el => {
@@ -88,6 +89,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteMe = catchAsync(async (req, res, next) => {
+  //simply mark the user as inactive
   await User.findByIdAndUpdate(req.user.id, { active: false });
 
   res.status(204).json({

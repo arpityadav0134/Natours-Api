@@ -4,8 +4,8 @@ const factory = require('./handlerFactory');
 
 exports.setTourUserIds = (req, res, next) => {
   // Allow nested routes
-  if (!req.body.tour) req.body.tour = req.params.tourId;
-  if (!req.body.user) req.body.user = req.user.id;
+  if (!req.body.tour) req.body.tour = req.params.tourId; //adding id of the tour
+  if (!req.body.user) req.body.user = req.user.id; //adding id of the logged in user to the review
   next();
 };
 

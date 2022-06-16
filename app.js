@@ -8,12 +8,16 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 
+//AppError: custom error calss for throwing operational errors
 const AppError = require('./utils/appError');
+//globalErrorHandler: custom "global error handling" middleware
 const globalErrorHandler = require('./controllers/errorController');
+
+//Requiring routers for resources: tours and users
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
-const bookingRouter = require('./routes/bookingRoutes');
+// const bookingRouter = require('./routes/bookingRoutes');
 const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
@@ -22,7 +26,7 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
-// Serving static files
+//Serving the static files in the public folder. Example:  http://127.0.0.1:3000/overview.html
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set security HTTP headers
@@ -33,10 +37,10 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Limit requests from same API
+//Limit requests from an IP address in a certain time
 const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
+  max: 100, //max number of requests
+  windowMs: 60 * 60 * 1000, // 1 hour
   message: 'Too many requests from this IP, please try again in an hour!'
 });
 app.use('/api', limiter);
@@ -66,24 +70,19 @@ app.use(
   })
 );
 
-// Test middleware
-app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();
-  // console.log(req.cookies);
-  next();
-});
-
-// 3) ROUTES
+//Mounting the routers to their respective urls
 app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
-app.use('/api/v1/bookings', bookingRouter);
+// app.use('/api/v1/bookings', bookingRouter);
 
+//Handling requests with invalid urls 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
+//Whenever next() method is called with a parameter, globalErrorHandler will be called
 app.use(globalErrorHandler);
 
 module.exports = app;

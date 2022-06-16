@@ -4,17 +4,16 @@ const authController = require('./../controllers/authController');
 
 const router = express.Router();
 
+//1) Non protected routes
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
 router.get('/logout', authController.logout);
-
 router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 
-// Protect all routes after this middleware
-router.use(authController.protect);
+//2) Protected routes
+router.use(authController.protect); //this will protect all the below routes everytime
 
-router.patch('/updateMyPassword', authController.updatePassword);
 router.get('/me', userController.getMe, userController.getUser);
 router.patch(
   '/updateMe',
@@ -22,9 +21,11 @@ router.patch(
   userController.resizeUserPhoto,
   userController.updateMe
 );
+router.patch('/updateMyPassword', authController.updatePassword);
 router.delete('/deleteMe', userController.deleteMe);
 
-router.use(authController.restrictTo('admin'));
+//3) Restricted routes
+router.use(authController.restrictTo('admin')); //this will restrict all the below routes to admin
 
 router
   .route('/')

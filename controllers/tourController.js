@@ -1,5 +1,5 @@
-const multer = require('multer');
-const sharp = require('sharp');
+const multer = require('multer'); //for file uploads
+const sharp = require('sharp'); //for image processing
 const Tour = require('./../models/tourModel');
 const catchAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
@@ -91,9 +91,6 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
     {
       $sort: { avgPrice: 1 }
     }
-    // {
-    //   $match: { _id: { $ne: 'EASY' } }
-    // }
   ]);
 
   res.status(200).json({
@@ -105,7 +102,7 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
 });
 
 exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
-  const year = req.params.year * 1; // 2021
+  const year = req.params.year * 1;
 
   const plan = await Tour.aggregate([
     {

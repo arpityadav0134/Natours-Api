@@ -1,18 +1,18 @@
 const nodemailer = require('nodemailer');
 const pug = require('pug');
-const htmlToText = require('html-to-text');
+// const htmlToText = require('html-to-text');
 
 module.exports = class Email {
   constructor(user, url) {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
-    this.from = `Jonas Schmedtmann <${process.env.EMAIL_FROM}>`;
+    this.from = `Arpit Yadav <${process.env.EMAIL_FROM}>`;
   }
 
   newTransport() {
+    // In production mode, Use Sendgrid
     if (process.env.NODE_ENV === 'production') {
-      // Sendgrid
       return nodemailer.createTransport({
         service: 'SendGrid',
         auth: {
@@ -21,7 +21,7 @@ module.exports = class Email {
         }
       });
     }
-
+    //Else use Mailtrap
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
@@ -47,7 +47,7 @@ module.exports = class Email {
       to: this.to,
       subject,
       html,
-      text: htmlToText.fromString(html)
+      // text: htmlToText.fromString(html) (deprecated)
     };
 
     // 3) Create a transport and send email
