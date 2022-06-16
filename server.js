@@ -44,3 +44,11 @@ process.on('unhandledRejection', err => {
     process.exit(1);
   });
 });
+
+//LISTENING HEROKU SIGTERM EVENT
+process.on('SIGTERM', () => {
+  console.log('SIGTERM recieved! 💥 Shutting down...');
+  server.close(() => {
+    console.log('Process Terminated')
+  });
+});
