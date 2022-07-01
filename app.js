@@ -32,7 +32,8 @@ app.set('views', path.join(__dirname, 'views'));
 //Implement CORS (cross origin resource sharing) for allowing other websites to consume our api
 app.use(cors({
   credentials: true,
-  origin: `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.PORT}`
+  origin: 'https://natours-frontend.herokuapp.com'
+  // origin: `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.PORT}`
 }));
 //Access-Control-Allow-Origin *
 //For situation when back end code (or api) and the front end are hosted on different hosts
