@@ -42,7 +42,7 @@ app.use(cors({
 // }))
 
 //Implement CORS for sensitive patch and delete requests
-app.options('*', cors())
+// app.options('*', cors())
 //app.options('/api/v1/tours/:id', cors())
 
 //Serving the static files in the public folder. Example:  http://127.0.0.1:3000/overview.html
