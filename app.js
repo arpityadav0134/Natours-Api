@@ -30,7 +30,10 @@ app.set('views', path.join(__dirname, 'views'));
 // 1) GLOBAL MIDDLEWARES
 
 //Implement CORS (cross origin resource sharing) for allowing other websites to consume our api
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.PORT}`
+}));
 //Access-Control-Allow-Origin *
 //For situation when back end code (or api) and the front end are hosted on different hosts
 //Ex: API at - api.natours.com and Front end code at - natours.com, use:

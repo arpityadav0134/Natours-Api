@@ -11,7 +11,7 @@ router.get('/logout', authController.logout);
 router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 
-//2) Protected routes
+//2) Protected routes (login required)
 router.use(authController.protect); //this will protect all the below routes everytime
 
 router.get('/me', userController.getMe, userController.getUser);
