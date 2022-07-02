@@ -80,7 +80,8 @@ exports.logout = (req, res) => {
   //sending a new dummy cookie with same name to override the jwt token in the browser 
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true
+    httpOnly: true,
+    sameSite: 'none' // set to none for cross-request
   });
   res.status(200).json({ status: 'success' });
 };
