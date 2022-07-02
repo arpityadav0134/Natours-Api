@@ -33,7 +33,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(cors({
   origin: 'https://natours-frontend.herokuapp.com',
   origin: 'http://localhost:3000',
-  origin: 'http://192.168.29.106:3000',
+  // origin: 'http://192.168.29.106:3000',
   credentials: true
   // origin: `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.PORT}`
 }));
