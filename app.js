@@ -31,11 +31,12 @@ app.set('views', path.join(__dirname, 'views'));
 
 //Implement CORS (cross origin resource sharing) for allowing other websites to consume our api
 app.use(cors({
-  origin: 'https://natours-frontend.herokuapp.com',
-  origin: 'http://localhost:3000',
-  // origin: 'http://192.168.29.106:3000',
+  origin: [
+    'https://natours-frontend.herokuapp.com',
+    'http://localhost:3000',
+    'http://192.168.29.106:3000'
+  ],
   credentials: true
-  // origin: `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.PORT}`
 }));
 
 //useful stuff about httpOnly cookie and cors configuration: https://geekflare.com/enable-cors-httponly-cookie-secure-token/
