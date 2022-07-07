@@ -163,18 +163,38 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
       )
     );
   }
+  // startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
+  let filter = { startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } } };
 
-  const tours = await Tour.find({
-    startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
-  });
+  const features = new APIFeatures(Tour.find(filter), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate()
 
+  const doc = await features.query;
+  const totalResults = await Model.countDocuments()
+
+  // SEND RESPONSE
   res.status(200).json({
     status: 'success',
-    results: tours.length,
+    results: doc.length,
+    totalResults,
     data: {
-      data: tours
+      data: doc
     }
   });
+  // const tours = await Tour.find({
+  //   startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
+  // });
+
+  // res.status(200).json({
+  //   status: 'success',
+  //   results: tours.length,
+  //   data: {
+  //     data: tours
+  //   }
+  // });
 });
 
 exports.getDistances = catchAsync(async (req, res, next) => {
