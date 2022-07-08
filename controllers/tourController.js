@@ -4,6 +4,7 @@ const Tour = require('./../models/tourModel');
 const catchAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
 const AppError = require('./../utils/appError');
+const APIFeatures = require('./../utils/apiFeatures');
 
 const multerStorage = multer.memoryStorage();
 
@@ -164,6 +165,9 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
     );
   }
   // startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
+  /********************************************************************************/
+  console.log(distance, lat, lng, unit);
+
   let filter = { startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } } };
 
   const features = new APIFeatures(Tour.find(filter), req.query)
@@ -173,7 +177,7 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
     .paginate()
 
   const doc = await features.query;
-  const totalResults = await Model.countDocuments()
+  const totalResults = await Tour.countDocuments()
 
   // SEND RESPONSE
   res.status(200).json({
@@ -184,6 +188,7 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
       data: doc
     }
   });
+  /********************************************************************************/
   // const tours = await Tour.find({
   //   startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
   // });
