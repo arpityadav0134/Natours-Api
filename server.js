@@ -1,3 +1,4 @@
+//requiring mongoose for using mongoDB database efficiently
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 

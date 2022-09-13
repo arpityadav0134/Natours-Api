@@ -116,7 +116,7 @@ const tourSchema = new mongoose.Schema(
   }
 );
 
-// specifying indexes
+// specifying indexes for faster responses
 tourSchema.index({ price: 1, ratingsAverage: -1 });
 tourSchema.index({ slug: 1 });
 tourSchema.index({ startLocation: '2dsphere' });

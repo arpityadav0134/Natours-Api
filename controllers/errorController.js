@@ -1,3 +1,5 @@
+//DETAILS EXPLAINED IN THE VIDEO NUMBER 113 INSIDE FOLDER NUMBER 09 OF THE UDEMY COURSE
+
 const AppError = require('./../utils/appError');
 
 const handleCastErrorDB = err => {
@@ -82,6 +84,7 @@ const sendErrorProd = (err, req, res) => {
   });
 };
 
+//FINALLY EXPORRTING THE GLOBAL ERROR HANDLING MIDDLEWARE FUNCTION
 module.exports = (err, req, res, next) => {
   // console.log(err.stack);
 

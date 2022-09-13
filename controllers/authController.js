@@ -20,11 +20,14 @@ const createSendToken = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
+    //httpOnly true so that browser can not access and modify the cookie
     httpOnly: true,
     sameSite: 'none' // set to none for cross-request
   };
+  //secure: true ensures that cookie is sent only on a secured connection (https)
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
+  //res.cookie('<nameOfCookie>', <valueOfCookie>, {cookieOptions})
   res.cookie('jwt', token, cookieOptions);
 
   // Remove password from output
@@ -53,6 +56,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   //Sending welcome email to the user
   await new Email(newUser, url).sendWelcome();
+  //Sending token as response
   createSendToken(newUser, 201, res);
 });
 
@@ -64,14 +68,14 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!email || !password) {
     return next(new AppError('Please provide email and password!', 400));
   }
-  // 2) Check if user exists && password is correct
+  // 2) Check if user exists, if yes, retrieve the correct password
   const user = await User.findOne({ email }).select('+password');
-
+  
+  //3) Check if the password is correct
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
   }
-
-  // 3) If everything ok, send token to client
+  // 4) If everything ok, send token to client
   createSendToken(user, 200, res);
 });
 
@@ -91,12 +95,15 @@ exports.logout = (req, res) => {
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) Getting token and check if it's there
   let token;
+  //look for the bearer token if there is any, in the request
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.jwt) {
+  } 
+  //else look for the jwt cookie
+  else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
 

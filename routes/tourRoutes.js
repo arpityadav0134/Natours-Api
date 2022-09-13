@@ -28,12 +28,12 @@ router
     tourController.getMonthlyPlan
   );
 
-//5) Routes within a given distance from a center
+//5) Tours within a given distance from a coordinate point
 router
   .route('/tours-within/:distance/center/:latlng/unit/:unit')
   .get(tourController.getToursWithin);
 
-//6) Distance of all tours from a center
+//6) Distance of all tours from a coordinate point
 router.route('/distances/:latlng/unit/:unit').get(tourController.getDistances);
 
 /*************************************************************************************/
